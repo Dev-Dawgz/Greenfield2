@@ -2,36 +2,46 @@ import React, { useState } from 'react';
 import axios from 'axios';
 
 
-const UpVote = ({initLikes, initDislikes}) => {
+const UpVote = ({text}) => {
+  console.log(text)
 
-  //hook to initialize like count and increment
-  const [likes, setLikes] = useState(initLikes);
+ // const { likes } = text;
 
-  //hook to initialize dislike count and decrement
-  const [dislikes, setDislikes] = useState(initDislikes);
+  const [likes, setLikes] = useState(0);
 
   const handleLikes = () => {
-    axios.post(`/text/${text.id}`, { action: 'likes'})
+    axios.post(`http://127.0.0.1:8080/text/${text.id}`, { action: 'like'})
     .then((textObj) => {
       if (textObj.status === 200) {
         setLikes(likes + 1);
       }
     })
-    .catch((err) => console.error('Error trying to like:', err))
+    .catch((err) => console.error(`Error liking: ${err}`))
 
   };
 
   const handleDislikes = () => {
-    axios.post('/text')
+    axios.post(`/text/${text.id}`, {action: 'dislike'})
+    .then((textObj) => {
+      if (textObj === 200) {
+        setLikes(likes - 1)
+      }
+    })
+    .catch((err) => console.error(`Error disliking: ${err}`))
   };
 
   return (
 
     <div>
-      <button>onClick={handleLikes}❤️‍🔥🔥</button>
-        <span>Likes: {likes}</span>
-        <button>onClick={handleDislikes}🗑️🚮</button>
-        <span>Likes: {dislikes}</span>
+      <br />
+        <span>Likes:{likes}</span>
+        <br />
+        <button
+        className='upvote-btn'
+        onClick={handleLikes}> ⬆️</button>
+        <button
+        className='upvote-btn'
+        onClick={handleDislikes}>⬇️</button>
     </div>
 
 

@@ -15,7 +15,7 @@ router.post('/', (req, res) => {
     })
 })
 
-//get prompt by text id
+//get prompt by prompt id
 router.get('/:id', (req, res) => {
   const { id } = req.params;
   Prompt.findOne({
@@ -34,11 +34,11 @@ router.get('/:id', (req, res) => {
 router.get('/', (req,res) => {
  // const { } = req.params;
   Prompt.findAll({})
-    .then((textData) => {
-      res.send(textData).status(200);
+    .then((promptData) => {
+      res.send(promptData).status(200);
     })
     .catch((err) => {
-      console.error('Could not Get all texts', err);
+      console.error('Could not Get all prompts', err);
       res.sendStatus(500);
     });
 })

@@ -2,6 +2,8 @@ import React, {useState, useEffect} from 'react';
 import {Link} from 'react-router-dom'
 import axios from'axios';
 import bestOf from '../badgeHelpers/bestOf.jsx'
+import UpVote from './UpVote.jsx';
+import Text from './Text.jsx';
 
 function Homepage() {
   //setting states of genrated word, current story, and input using hooks
@@ -86,7 +88,9 @@ function Homepage() {
               <button className='user-btn'>User</button>
             </Link>
           </div>
-
+          <div>
+            <Text text={{id: 1}} />
+          </div>
         </div>
 
     </div>

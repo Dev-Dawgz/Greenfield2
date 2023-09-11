@@ -42,11 +42,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px
+  padding: 20px;
 }
 
 .submit-btn {
-  padding: 20px
+  padding: 20px;
+  border-radius: 12px;
 }
 
 .user-data {
@@ -56,13 +57,13 @@
   width: auto;
   /* bottom: 10%; */
   display: flex;
+  background-color: bisque;
   justify-content: center;
   align-items: center;
   border-style: ridge;
 }
 
 .user-index {
-  /* background-color: cadetblue; */
   padding-top: 50px;
   padding-right: 30px;
   padding-bottom: 50px;
@@ -74,6 +75,7 @@
 .user-ul {
   list-style-type: none;
 }
+
 .user-head {
   position: absolute;
   justify-content: center;
@@ -85,4 +87,26 @@
 .user-btn {
   grid-column: 2;
   grid-row: 1;
+  width: 150px;
+  border-radius: 12px;
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+}
+
+.user-home-button {
+  width: 150px;
+  border-radius: 12px;
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+}
+
+.upvote-btn {
+  background-color: blue;
+  color:darkolivegreen;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.liked {
+  background-color: slateblue;
 }
