@@ -138,6 +138,11 @@ function Homepage() {
       setPosts((posts) => ([]))
       setStory((story) => ([...story]))
       getWords();
+
+      setRemainingTime(prevRemainingTime => {
+          return actionInterval;
+      });
+      
     }, 30000) // this is where to change interval time between prompt changes (currently set to an hour)
 
     const storyInterval = setInterval(() => {
