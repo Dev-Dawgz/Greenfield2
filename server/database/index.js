@@ -60,6 +60,8 @@ const Text = orm.define('texts', {
   timestamps: false
 });
 
+
+
 User.hasMany(Text);
 Text.belongsTo(User);
 Prompt.hasMany(Text);

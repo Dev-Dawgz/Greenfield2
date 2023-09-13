@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const {Text} = require('../database/index');
+const {Text, Prompt} = require('../database/index');
 
 //get text by text id
 router.get('/:id', (req, res) => {
@@ -129,15 +129,41 @@ router.get('/prompt/:promptId', (req, res) => {
 })
 
 router.get('/', (req,res) => {
-  // const { } = req.params;
-   Text.findAll({})
-     .then((textData) => {
-       res.send(textData).status(200);
-     })
-     .catch((err) => {
-       console.error('Could not Get all texts', err);
-       res.sendStatus(500);
-     });
- })
+// const { } = req.params;
+  Text.findAll({})
+    .then((textData) => {
+      res.send(textData).status(200);
+    })
+    .catch((err) => {
+      console.error('Could not Get all texts', err);
+      res.sendStatus(500);
+    });
+})
+
+router.get('/winner/:id/:badgeId', (req, res) => {
+  const { id, badgeId } = req.params;
+
+
+  Text.findAll({
+    where: {
+      id: id,
+    },
+    include: [
+      {
+        model: Prompt,
+        where: {
+          badgeId: badgeId,
+        }
+      }
+    ]
+  })
+  .then((texts) => {
+    res.status(200).send(texts)
+  })
+  .catch((err) => {
+    console.error('Error:', err);
+    res.status(500);
+  });
+});
 
 module.exports = router; 

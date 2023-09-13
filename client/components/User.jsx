@@ -7,7 +7,7 @@ const User = () => {
   const [userId, setUserId] = useState();
   const [userTexts, setUserTexts] = useState([]);
   const [userBadges, setUserBadges] = useState('');
-  const  [username, setUsername] = useState('PhreezorBurn');
+  const  [username, setUsername] = useState('yeauxDejuan');
 
  
   const getUserId = (username) => {
@@ -25,7 +25,7 @@ const User = () => {
  
   //axios request to retrieve user texts by id
   const getUserTexts = (id) => {
-    axios.get(`http://localhost:8080/text/user/${id}`)
+    axios.get(`http://127.0.0.1:8080/text/user/${id}`)
     .then((texts) =>{
       setUserTexts(texts.data);
     })
@@ -42,7 +42,7 @@ const User = () => {
   return (
     <div>
       <nav>
-        <Link to='/' >
+        <Link to='/home' >
           <button className='user-home-button'>HomePage</button>
         </Link>
       </nav>
@@ -52,11 +52,20 @@ const User = () => {
             <ul className='user-ul'>
         {
           userTexts.map((entry) => {
-            return <Link to="/user/text"
+            return <Link
+             to={`/user/text/${entry.id}`}
             className='user-index'
             entry={entry}
             key={entry.id}>
-               {entry.text}
+              <div>
+                <strong> Response:</strong> {entry.text}
+              </div>
+              <div>
+              <strong> Prompt:</strong> {entry.text}
+              </div>
+
+               {/* {entry.text} */}
+
             </Link>
           })
         }
