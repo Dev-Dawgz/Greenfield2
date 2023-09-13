@@ -122,16 +122,19 @@ function Homepage() {
       })
 
     // grabs all of the texts submitted for current prompt
-    axios.get('/prompt')
-      .then((response) => {
-        const latestPrompt = response.data[response.data.length - 1];
-        axios.get(`/text/prompt/${latestPrompt.id}`)
-          .then((response) => {
-            console.log('response.data', response.data)
-            setPosts(response.data)
-          })
-          .catch((error) => console.error('could not get latest prompt', error));
-     })
+    if(allPosts.length > 0){
+
+      axios.get('/prompt')
+        .then((response) => {
+          const latestPrompt = response.data[response.data.length - 1];
+          axios.get(`/text/prompt/${latestPrompt.id}`)
+            .then((response) => {
+              console.log('response.data', response.data)
+              setPosts(response.data)
+            })
+            .catch((error) => console.error('could not get latest prompt', error));
+       })
+    }
       
     const promptInterval = setInterval(() => {
       promptWinner(allPosts)
@@ -172,7 +175,6 @@ function Homepage() {
 
     //cleanup
     return () => {
-      clearInterval(appInterval);
       clearInterval(timer);
     };
   }, [actionInterval]);
@@ -182,7 +184,8 @@ function Homepage() {
   //changes state of winners
   const promptWinner = (allPosts) => {
     //grab texts with the current promptId
-    if(allPosts !== undefined){
+    console.log(allPosts)
+    if(allPosts.length > 0){
       axios.get(`/text/prompt/${latestPrompt.id}`)
         .then((textArr) => {
           console.log("textarr", textArr)
