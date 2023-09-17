@@ -8,20 +8,8 @@ const { User } = require('./database/index')
 const app = express();
 const port = process.env.PORT || 8080;
 
-// // Require and use routes
-// const { app: routesApp } = require('./routes/routes');
-// app.use('/', routesApp); // Mount routes
 // Middleware for serving static files
 app.use(express.static(path.resolve(__dirname, '../dist')));
-
-
-// app.get('/*', function(req, res) {
-//   res.sendFile(path.join(__dirname, '../dist/index.html'), function(err) {
-//     if (err) {
-//       res.status(500).send(err)
-//     }
-//   })
-// })
 
 // Initialize session
 const superSecretKey = 'Dev_Dawgs_Till_I_Die';

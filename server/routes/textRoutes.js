@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const {Text} = require('../database/index');
+const {Text, Prompt} = require('../database/index');
 
 //get text by text id
 router.get('/:id', (req, res) => {
@@ -16,6 +16,21 @@ router.get('/:id', (req, res) => {
     console.error(err.message);
     res.status(404);
   })
+})
+
+//grabs latest text created
+router.get('/find/last', (req, res) => {
+  Text.findAll({
+    limit: 1,
+    order: [['id', 'DESC']]
+  })
+    .then((lastText) => {
+      res.send(lastText).status(200);
+    })
+    .catch((err) => {
+      console.error('Could not Get last text submitted', err);
+      res.sendStatus(500);
+    });
 })
 
 //post to update likes and dislikes
@@ -94,6 +109,7 @@ router.get('/user/:userId', (req,res) => {
     });
 })
 
+//post a new text
 router.post('/', (req, res) => {
   Text.create(req.body)
     .then(() => {
@@ -128,16 +144,44 @@ router.get('/prompt/:promptId', (req, res) => {
     })
 })
 
+//get all text
 router.get('/', (req,res) => {
-  // const { } = req.params;
-   Text.findAll({})
-     .then((textData) => {
-       res.send(textData).status(200);
-     })
-     .catch((err) => {
-       console.error('Could not Get all texts', err);
-       res.sendStatus(500);
-     });
- })
+// const { } = req.params;
+  Text.findAll({})
+    .then((textData) => {
+      res.send(textData).status(200);
+    })
+    .catch((err) => {
+      console.error('Could not Get all texts', err);
+      res.sendStatus(500);
+    });
+})
+
+//get texts that won for specific story
+router.get('/winner/:id/:badgeId', (req, res) => {
+  const { id, badgeId } = req.params;
+  Text.findAll({
+    where: {
+      winner: id,
+    },
+    include: [
+      {
+        model: Prompt,
+        where: {
+          badgeId: badgeId,
+        }
+      }
+    ]
+  })
+  .then((texts) => {
+    res.status(200).send(texts)
+  })
+  .catch((err) => {
+    console.error('Error:', err);
+    res.status(500);
+  });
+});
+
+
 
 module.exports = router; 

@@ -1,4 +1,7 @@
 body, html {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, Helvetica, sans-serif;
   background-image: url(./images/HD-wallpaper-blue-gradient-ombre.jpg);
   background-repeat: repeat-x;
   background-size: cover;
@@ -15,20 +18,27 @@ body, html {
 
 
 .word-container {
-  grid-column: 1;
-  grid-row: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+ 
   font-size: 35px;
   background: #E2CB76;
   background: -moz-radial-gradient(center, #E2CB76 0%, #D4DB8A 46%, #96A2D5 100%);
   background: -webkit-radial-gradient(center, #E2CB76 0%, #D4DB8A 46%, #96A2D5 100%);
   background: radial-gradient(ellipse at center, #E2CB76 0%, #D4DB8A 46%, #96A2D5 100%);
   padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px;
   text-align: center;
+  margin: 10px;
 }
 
 .story-container {
-  grid-column: 1;
-  grid-row: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   font-size: 20px;
   border-color: black;
   background: #96A2D5;
@@ -36,8 +46,11 @@ body, html {
   background: -webkit-radial-gradient(center, #96A2D5 0%, #D4DB8A 46%, #E2CB76 100%);
   background: radial-gradient(ellipse at center, #96A2D5 0%, #D4DB8A 46%, #E2CB76 100%);
   padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px ;
   text-align: center;
   border-style:inset;
+  margin: 10px
 }
 
 .user-input {
@@ -46,6 +59,20 @@ body, html {
   width: 100%;
   height: 40px;
   overflow-wrap: break-word;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  padding: 0.5rem;
+  color: #666;
+  box-shadow: inset 0 0 0.25rem #ddd;
+  &:focus {
+    outline: none;
+    border: 1px solid darken(#ddd, 5%);
+    box-shadow: inset 0 0 0.5rem darken(#ddd, 5%);
+  }
+  &[placeholder] { 
+    font-style: italic;
+    font-size: 0.875rem;
+  }
 }
 
 .submit{
@@ -58,6 +85,14 @@ body, html {
 .submit-btn {
   padding: 20px;
   border-radius: 12px;
+}
+
+.text-count {
+  color:#ccc
+}
+
+.live-timer {
+  color:#ccc
 }
 
 .user-data {
@@ -85,17 +120,50 @@ body, html {
 
 }
 
-.user-ul {
-  list-style-type: none;
-}
-
 .user-badges {
   width: fit-content;
   padding: 5px;
   align-items: right;
   color: black;
-  background: #f8e40c;
-  border: 11px dashed #1C6EA4;
+  background: #69a1d9;
+  border: 11px #1C6EA4;
+}
+
+.silver-badge {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  width: 15%;
+  text-align: center;
+  padding: 5px;
+  align-items: right;
+  color: black;
+  background: -moz-linear-gradient(left, #f2f2f2 0%, #c1c3c3 42%, #8d9091 100%);
+  background: -webkit-linear-gradient(left, #f2f2f2 0%, #c1c3c3 42%, #8d9091 100%);
+  background: linear-gradient(to right, #f2f2f2 0%, #c1c3c3 42%, #8d9091 100%);
+  border: 8px dashed silver;
+}
+
+.bronze-badge {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  width: 15%;
+  text-align: center;
+  padding: 5px;
+  color: black;
+  background: -moz-linear-gradient(left, #e9d4b3 0%, #b68d4c 100%);
+  background: -webkit-linear-gradient(left, #e9d4b3 0%, #b68d4c 100%);
+  background: linear-gradient(to right, #e9d4b3 0%, #b68d4c 100%);
+  border: 8px dashed #cd7f32;
+}
+
+.gold-badge {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  width: 15%;
+  text-align: center;
+  padding: 5px;
+  color: black;
+  background: -moz-linear-gradient(left, #f4f1d2 0%, #feb645 100%);
+  background: -webkit-linear-gradient(left, #e4e0ae 0%, #feb645 100%);
+  background: linear-gradient(to right, #FCF6BA 0%, #feb645 100%);
+  border: 8px dashed gold;
 }
 
 .badges-header {
@@ -164,8 +232,6 @@ body, html {
 
 .liked {
   background-color: slateblue;
-
-
 }
 
 .text-container {
@@ -183,4 +249,30 @@ body, html {
 
 .text-content {
   flex-grow: 1;
+}
+
+.user-entry-box {
+  display: flex;
+  flex-direction: row;
+  text-align: center;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin: 10px;
+  border: 2px solid blue;
+  padding: 20px; 
+  margin-bottom: 10px;
+  background-color: rgb(214, 214, 133);
+  width: 450px;
+  height:auto;
+  overflow: hidden;
+}
+.user-ul {
+  list-style-type: none;
+  padding: 0;
+  text-align: center
+}
+
+.small-text {
+  font-size: 15px;
+  margin-top: 15px;
 }

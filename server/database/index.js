@@ -1,4 +1,4 @@
-const { Sequelize, DataTypes } = require('sequelize');
+const { Sequelize, DataTypes, QueryTypes } = require('sequelize');
 const orm = new Sequelize('stories', 'root', '', {
   host: '127.0.0.1',
   dialect: 'mysql'
@@ -59,6 +59,8 @@ const Text = orm.define('texts', {
 }, {
   timestamps: false
 });
+
+
 
 User.hasMany(Text);
 Text.belongsTo(User);

@@ -13,6 +13,22 @@ router.get('/', (req, res) => {
     })
 })
 
+//grabs latest badge created
+router.get('/find/last', (req, res) => {
+  Badges.findAll({
+    limit: 1,
+    order: [['id', 'DESC']]
+  })
+    .then((lastBadge) => {
+      res.send(lastBadge).status(200);
+    })
+    .catch((err) => {
+      console.error('Could not Get last badge submitted', err);
+      res.sendStatus(500);
+    });
+})
+
+//create new badge
 router.post('/', (req, res) => {
   Badges.create(req.body)
     .then(() => {
@@ -25,12 +41,12 @@ router.post('/', (req, res) => {
     })
 })
 
-//get by promptId
-router.get('/:promptId', (req, res) => {
-  const { promptId } = req.params;
+//get by id
+router.get('/:id', (req, res) => {
+  const { id } = req.params;
   Badges.findOne({
     where: {
-      promptId: promptId
+      id: id
     }
   })
     .then((badgeData) => {
@@ -41,24 +57,19 @@ router.get('/:promptId', (req, res) => {
     ])
 })
 
-//changes badges by promptId
-router.put('/:promptId', (req, res) => {
-  const { promptId } = req.params;
-  const { changes } = req.body
-  Badges.update( 
-    {
-      mostLikes: changes.mostLikes,
-      mostWordMatchCt: changes.mostWordMatchCt
-    },
-    {where: {promptId: promptId}}
-  )
-    .then((data) => {
-      console.log(data);
-      res.sendStatus(201)
-    })
-    .catch(() => {
-      res.sendStatus(500)
-    })
-})
+
+//post to update winner status in badge
+router.post('/update/:id', (req, res) => {
+  const { id } = req.params;
+
+  Badges.upsert({
+    id: id,
+    mostLikes: req.body.mostLikes,
+    mostWordMatchCt: req.body.mostWordMatchCt,
+    mostContributions: req.body.mostContributions
+  })
+  .then(() => res.sendStatus(201))
+  .catch(() => res.sendStatus(500))
+});
 
 module.exports = router;
