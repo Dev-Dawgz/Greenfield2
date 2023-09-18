@@ -13,6 +13,21 @@ router.get('/', (req, res) => {
     })
 })
 
+//grabs latest badge created
+router.get('/find/last', (req, res) => {
+  Badges.findAll({
+    limit: 1,
+    order: [['id', 'DESC']]
+  })
+    .then((lastBadge) => {
+      res.send(lastBadge).status(200);
+    })
+    .catch((err) => {
+      console.error('Could not Get last badge submitted', err);
+      res.sendStatus(500);
+    });
+})
+
 router.post('/', (req, res) => {
   Badges.create(req.body)
     .then(() => {

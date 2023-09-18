@@ -42,4 +42,19 @@ router.get('/', (req,res) => {
     });
 })
 
+//Get last prompt submitted
+router.get('/find/last', (req,res) => {
+  Prompt.findAll({
+    limit: 1,
+    order: [['id', 'DESC']]
+  })
+    .then((lastPrompt) => {
+      res.send(lastPrompt).status(200);
+    })
+    .catch((err) => {
+      console.error('Could not Get last prompt submitted', err);
+      res.sendStatus(500);
+    });
+})
+
 module.exports = router;
