@@ -49,7 +49,7 @@ const User = () => {
 
   //axios request to retrieve user texts by id
   const getStoryWithResponse = (badgeId) => {
-    axios.get(`http://127.0.0.1:8080/text/winner/1/${badgeId}`)
+    axios.get(`/text/user/${userId}`)
     .then((texts) =>{
       setUserTexts(texts.data);
     })
@@ -105,7 +105,7 @@ const User = () => {
                     <strong>Username:</strong> {username}
                   </div>
                   <div>
-                    <strong>Story:</strong> {entry.prompt.matchWords}
+                    {/* <strong>Story:</strong> {entry.prompt.matchWords} */}
                   </div>
                   <div>
                     <strong>Response:</strong> {entry.text}
@@ -113,7 +113,7 @@ const User = () => {
                   <div className='small-text'>
                     <strong>Likes:</strong> {entry.likes}
                      &nbsp;&nbsp;&nbsp;
-                    <strong>Created:</strong> {entry.prompt.createdAt.substring(0, 10)}
+                    {/* <strong>Created:</strong> {entry.prompt.createdAt.substring(0, 10)} */}
 
                   </div>
                 </div>
@@ -125,7 +125,7 @@ const User = () => {
           </div>
       <div className="username-update">
         <div className="username-label">
-          <strong></strong> {username}
+          <strong>{username}</strong> 
         </div>
         <div className="update-username">
           <input
