@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from './AuthContext.jsx';
 
 const Login = () => {
+  const { login } = useAuth(); // Access login function from AuthContext
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -12,13 +16,13 @@ const Login = () => {
     try {
       const response = await axios.post('/auth/login', { username, password });
       if (response.data.message === 'Login successful.') {
-        localStorage.setItem('user_id', response.data.user_id);
-        localStorage.setItem('user_name', response.data.user_name);
-
-        //after setting state, clear localstorage
-
-        // Redirect to a protected route upon successful login
-        window.location.href = '/home';
+          const userData = {
+          id: response.data.user_id,
+          username: response.data.user_name
+        };
+      console.log(userData);
+      login(userData);
+      navigate({ pathname: '/home' })
       }
     } catch (error) {
       console.error(error);

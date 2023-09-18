@@ -1,9 +1,14 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from './AuthContext.jsx';
 
 const Register = () => {
+  const { login } = useAuth();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+
+  const navigate = useNavigate();
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -11,12 +16,14 @@ const Register = () => {
     try {
       const response = await axios.post('/auth/register', { username, password });
       if (response.status === 201) {
-        // Set user ID in local storage
-        localStorage.setItem('userId', response.data.userId);
-        localStorage.setItem('user_name', response.data.user_name);
+        const userData = {
+          id: response.data.user_id,
+          username: response.data.user_name
+        };
+        login(userData);
 
         // Registration successful, you can redirect to the login page or another route
-        window.location.href = '/home';
+        navigate({ pathname: '/home' });
       }
     } catch (error) {
       console.error(error);

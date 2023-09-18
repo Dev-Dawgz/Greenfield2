@@ -88,6 +88,35 @@ router.post('/badges/:id/:value', (req, res) => {
     });
 });
 
+// Define a route to update the username
+router.put('/:userId', (req, res) => {
+  const userId = req.params.userId;
+  const newUsername = req.body.username;
+
+  // Validate the new username
+  if (!newUsername) {
+    return res.status(400).json({ message: 'Must input a username' });
+  }
+
+  // Assuming you have a User model, update the username
+  User.update(
+    { username: newUsername },
+    { where: { id: userId } }
+  )
+    .then((result) => {
+      if (result[0] === 0) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+      // Handle success
+      res.status(200).json({ message: 'Username updated successfully' });
+    })
+    .catch((error) => {
+      // Handle error
+      console.error('Error updating username:', error);
+      res.status(500).json({ message: 'Internal server error' });
+    });
+});
+
 // //post to update badge string in user
 // router.post('/update/:id/:value', (req, res) => {
 //   const { id, value } = req.params;

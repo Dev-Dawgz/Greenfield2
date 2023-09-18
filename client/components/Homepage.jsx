@@ -1,26 +1,43 @@
 import React from 'react';
 import {useState, useEffect} from 'react';
-import {Link} from 'react-router-dom';
+import {Link, useNavigate } from 'react-router-dom';
 import axios from'axios';
 import Post from './Post.jsx';
 import Timer from './Timer.jsx'
 import {promptWinner, awardCeremony} from '../badgeHelpers/bestOf.jsx';
+import User from './User.jsx';
+import { useAuth } from './AuthContext.jsx';
 // import Text from './Text.jsx';
 
+
 function Homepage() {
+  // initialize navigate
+  const navigate = useNavigate();
+
   //setting states of generated word, current story, and input using hooks
+  
+  // access the user state with data from context
+  const { user, logout } = useAuth();
+  
+  // // Check if the user is authenticated before rendering content
+  // if (!user) {
+  //   // Redirect or show a message to unauthenticated users
+  //   navigate({ pathname: '/' });
+  // }
+  
   //building story from post winners
   const [story, setStory] = useState([])
   const [input, setInput] = useState('')
   const [words, setWords] = useState([])
+
   //contenders for next part of the story
   const [posts, setPosts] = useState([])
-  const [userId, setUser] = useState(6);
-  const [textCount, setTextCount] = useState()
+  const [userId, setUserId] = useState(user.id);
+  const [textCount, setTextCount] = useState(0)
   const [lastUpdate, setLastUpdate] = useState('')
   const [currentPrompt, setCurrentPrompt] = useState({})
-  const [currentBadge, setBadge] = useState({}) 
-  
+  const [currentBadge, setBadge] = useState({})
+
 
   //set the starting time for the timer
   const actionInterval = 900000; // 30 seconds for testing
@@ -57,7 +74,7 @@ function Homepage() {
                 .catch((err) => {
                 console.error("Could not get prompts", err)
                 })
-    
+
               })
               .catch((err) => {
                 console.error("Could not Submit!", err)
@@ -111,12 +128,12 @@ function Homepage() {
             .catch((error) => console.error('there are no submissions', error));
           //sets the most current prompt in state
           }
-      
+
         })
       .catch((err) => {
         console.error('Could not get latest Prompt', err)
       })
-    
+
     //grabs the most current story
     axios.get('/badges/find/last')
       .then((response) => {
@@ -140,7 +157,7 @@ function Homepage() {
         console.error('Error getting story:', err)
       })
 
-    
+
     //picks winning submission and starts a new round
     const promptInterval = setInterval(() => {
       promptWinner(latestPrompt.id).then((best) => {
@@ -154,7 +171,7 @@ function Homepage() {
       awardCeremony(latestBadgeStory.id);
       newStory()
     }, 60000)
-    
+
     return () => {
       clearInterval(promptInterval)
       clearInterval(storyInterval);
@@ -178,7 +195,7 @@ function Homepage() {
 
     //cleanup
     return () => {
-      clearInterval(appInterval);
+      clearInterval(actionInterval);
       clearInterval(timer);
     };
   }, [actionInterval]);
@@ -211,19 +228,22 @@ function Homepage() {
 
   }
 
-  
+
   //return dom elements and structure
   return (
     <div>
-      
+
       <nav className='nav-btn' >
       <div className='user-div'>
         <Link to="/user">
           <button className='user-btn'>User</button>
         </Link>
-      <Link to=''>
-        <button className='user-btn' >Button for Logan</button>
-      </Link>
+        <div>
+            <button className='user-btn' onClick={ () => {
+              logout();
+              navigate({ pathname: '/' });
+            } }>Logout</button>
+        </div>
       <div>
         <Timer minutes={minutes} seconds={seconds} />
       </div>
@@ -232,13 +252,13 @@ function Homepage() {
 
     {/* //div for wrapper containing all homepage elements */}
     <div className='wrapper'>
-      
+
       <div className='word-container'>
         {words.map((word, i) => (
         <span key={i}>{word } </span>
       ))}
       </div>
-      
+
         <div className='story-container'>
           {
             story.map((submission, i) => {
@@ -248,11 +268,11 @@ function Homepage() {
         </div>
 
         <div >
-          
-          <textarea 
+
+          <textarea
           className='user-input'
           type='text'
-          placeholder='Add to the story!' 
+          placeholder='Add to the story!'
           onChange={handleInput}
           value={input}
           maxLength={150}
@@ -270,7 +290,7 @@ function Homepage() {
                 return <Post key={post.id} text={post}/>
               })
             }
-            
+
           </div>
         </div>
 
@@ -278,7 +298,7 @@ function Homepage() {
         </div>
 
     </div>
-    
+
   </div>
   )
 };
