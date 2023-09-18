@@ -40,7 +40,7 @@ function Homepage() {
 
 
   //set the starting time for the timer
-  const actionInterval = 900000; // 30 seconds for testing
+  const actionInterval = 60000; // one minute for testing
   const storedTargetTime = localStorage.getItem('targetTime');
   const initialTargetTime = storedTargetTime ? parseInt(storedTargetTime, 10) : Date.now() + actionInterval;
 
@@ -164,7 +164,7 @@ function Homepage() {
         setStory((story) => ([...story, best]));
       })
       newRound();
-    }, 20000) // this is where to change interval time between prompt changes (currently set to an hour)
+    }, 60000) // this is where to change interval time between prompt changes (currently set to an hour)
 
     //send badges, resets the story to start a new one, starts a new round
     const storyInterval = setInterval(() => {
