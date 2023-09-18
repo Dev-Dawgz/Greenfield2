@@ -276,3 +276,9 @@ body, html {
   font-size: 15px;
   margin-top: 15px;
 }
+
+.timeStamp {
+  font-size: 14px;
+  color: gray;
+  margin-top: 4px;
+}

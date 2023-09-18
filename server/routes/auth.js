@@ -24,11 +24,11 @@ router.post('/register', async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Create a new user
-    const newUser = await User.create({ username, password: hashedPassword });
-    const userID = newUser.id;
-    const user_name = newUser.username;
+    const new_user = await User.create({ username, password: hashedPassword });
+    const user_id = new_user.id;
+    const user_name = new_user.username;
 
-    return res.status(201).json({ message: 'Registration successful.', newUser, userID, user_name });
+    return res.status(201).json({ message: 'Registration successful.', new_user, user_id, user_name });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: 'Internal server error.' });

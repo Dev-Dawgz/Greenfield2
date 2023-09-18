@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const {Text, Prompt} = require('../database/index');
+const {Text, Prompt, User} = require('../database/index');
 
 //get text by text id
 router.get('/:id', (req, res) => {
@@ -181,6 +181,32 @@ router.get('/winner/:id/:badgeId', (req, res) => {
     res.status(500);
   });
 });
+
+router.get('/user/:userId/:username', (req, res) => {
+  const {userId, username} = req.params;
+
+  Text.findOne({
+    where: {
+      userId: userId
+    },
+    include: [
+      {
+        model: User,
+        where: {
+          username: username
+        },
+        attributes: ['username']
+      }
+    ]
+  })
+  .then((user) => {
+    res.status(200).send(user)
+  })
+  .catch((err) => {
+    console.error(err);
+    res.status(500);
+  })
+})
 
 
 
