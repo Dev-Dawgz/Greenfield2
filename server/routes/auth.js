@@ -24,9 +24,11 @@ router.post('/register', async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Create a new user
-    const newUser = await User.create({ username, password: hashedPassword });
+    const new_user = await User.create({ username, password: hashedPassword });
+    const user_id = new_user.id;
+    const user_name = new_user.username;
 
-    return res.status(201).json({ message: 'Registration successful.', newUser });
+    return res.status(201).json({ message: 'Registration successful.', new_user, user_id, user_name });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: 'Internal server error.' });
@@ -35,10 +37,21 @@ router.post('/register', async (req, res) => {
 
 // User login
 router.post('/login', passport.authenticate('local'), (req, res) => {
-  const userID = req.user.id
-  console.log('this is the current user id ---------->', userID)
-  return res.json({ message: 'Login successful.' });
+  const user_id = req.user.id;
+  const user_name = req.user.username;
+  console.log('this is the current user id/name ---------->', user_id, user_name)
+  return res.json({ message: 'Login successful.', user_id, user_name });
 });
+
+// // checking if user is logged in
+// router.get('/check', (req, res) => {
+//   if (req.isAuthenticated()) {
+//     const userID = req.user.id;
+//     const user_name = req.user.username;
+//     return res.json({ message: 'Authenticated', userID, user_name });
+//   }
+//   res.status(401).json({ message: 'Not authenticated.' });
+// });
 
 // User logout
 router.get('/logout', (req, res) => {

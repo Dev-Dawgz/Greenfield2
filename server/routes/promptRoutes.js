@@ -29,21 +29,23 @@ router.get('/:id', (req, res) => {
   })
 })
 
-//Get all prompts
-router.get('/', (req,res) => {
- // const { } = req.params;
-  Prompt.findAll({})
-    .then((promptData) => {
-      res.send(promptData).status(200);
+//Get last prompt submitted
+router.get('/find/last', (req,res) => {
+  Prompt.findAll({
+    limit: 1,
+    order: [['id', 'DESC']]
+  })
+    .then((lastPrompt) => {
+      res.send(lastPrompt).status(200);
     })
     .catch((err) => {
-      console.error('Could not Get all prompts', err);
+      console.error('Could not Get last prompt submitted', err);
       res.sendStatus(500);
     });
 })
 
-//Get last prompt submitted
-router.get('/find/last', (req,res) => {
+//Get last prompt submitted in particular story
+router.get('/find/last/', (req,res) => {
   Prompt.findAll({
     limit: 1,
     order: [['id', 'DESC']]

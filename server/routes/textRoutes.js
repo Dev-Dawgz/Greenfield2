@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const {Text, Prompt} = require('../database/index');
+const {Text, Prompt, User} = require('../database/index');
 
 //get text by text id
 router.get('/:id', (req, res) => {
@@ -16,6 +16,21 @@ router.get('/:id', (req, res) => {
     console.error(err.message);
     res.status(404);
   })
+})
+
+//grabs latest text created
+router.get('/find/last', (req, res) => {
+  Text.findAll({
+    limit: 1,
+    order: [['id', 'DESC']]
+  })
+    .then((lastText) => {
+      res.send(lastText).status(200);
+    })
+    .catch((err) => {
+      console.error('Could not Get last text submitted', err);
+      res.sendStatus(500);
+    });
 })
 
 //post to update likes and dislikes
@@ -94,6 +109,7 @@ router.get('/user/:userId', (req,res) => {
     });
 })
 
+//post a new text
 router.post('/', (req, res) => {
   Text.create(req.body)
     .then(() => {
@@ -111,24 +127,24 @@ router.get('/prompt/:promptId', (req, res) => {
   const { promptId } = req.params;
   Text.findAll({
     where: {
-      promptId: promptId,
+      promptId: promptId
     }
   })
     .then((textArr) => {
       if(textArr.length > 0){
         res.status(200).send(textArr);
       } else {
-        console.log('promptId and round had no match')
+        console.log('promptId had no match')
         res.sendStatus(404);
       }
     })
     .catch((error) => {
-      console.error('get text with promptId and round failed', error);
+      console.error('get text with promptId failed', error);
       res.sendStatus(500);
     })
 })
 
-//get all texts
+//get all text
 router.get('/', (req,res) => {
 // const { } = req.params;
   Text.findAll({})
@@ -141,22 +157,7 @@ router.get('/', (req,res) => {
     });
 })
 
-//get last text submitted
-router.get('/find/last', (req,res) => {
-  Text.findAll({
-    limit: 1,
-    order: [['id', 'DESC']]
-  })
-    .then((lastText) => {
-      res.send(lastText).status(200);
-    })
-    .catch((err) => {
-      console.error('Could not Get last Text submitted', err);
-      res.sendStatus(500);
-    });
-})
-
-//get all texts for specific story that won
+//get texts that won for specific story
 router.get('/winner/:id/:badgeId', (req, res) => {
   const { id, badgeId } = req.params;
   Text.findAll({
@@ -180,5 +181,33 @@ router.get('/winner/:id/:badgeId', (req, res) => {
     res.status(500);
   });
 });
+
+router.get('/user/:userId/:username', (req, res) => {
+  const {userId, username} = req.params;
+
+  Text.findOne({
+    where: {
+      userId: userId
+    },
+    include: [
+      {
+        model: User,
+        where: {
+          username: username
+        },
+        attributes: ['username']
+      }
+    ]
+  })
+  .then((user) => {
+    res.status(200).send(user)
+  })
+  .catch((err) => {
+    console.error(err);
+    res.status(500);
+  })
+})
+
+
 
 module.exports = router; 
