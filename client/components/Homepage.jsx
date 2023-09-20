@@ -174,7 +174,8 @@ function Homepage() {
     const storyInterval = setInterval(() => {
       awardCeremony(latestBadgeStory.id);
       newStory()
-    }, 6000000)
+    }, 90000)
+
 
     return () => {
       clearInterval(promptInterval)
@@ -231,7 +232,7 @@ function Homepage() {
     if(input !== ''){
       setInput('')
       setTextCount(0)
-      axios.post('/text', {text: input, userId: userId , promptId: currentPrompt.id })
+      axios.post('/text/', {text: input, userId: userId , promptId: currentPrompt.id })
       .then(() => {
         axios.get('/text/find/last')
         .then((response) => {
