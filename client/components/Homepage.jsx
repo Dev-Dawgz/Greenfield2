@@ -164,13 +164,13 @@ function Homepage() {
         setStory((story) => ([...story, best]));
       })
       newRound();
-    }, 60000) // this is where to change interval time between prompt changes (currently set to an hour)
+    }, 30000) // this is where to change interval time between prompt changes (currently set to an hour)
 
     //send badges, resets the story to start a new one, starts a new round
     const storyInterval = setInterval(() => {
       awardCeremony(latestBadgeStory.id);
       newStory()
-    }, 60000)
+    }, 90000)
 
     return () => {
       clearInterval(promptInterval)
@@ -214,7 +214,7 @@ function Homepage() {
     if(input !== ''){
       setInput('')
       setTextCount(0)
-      axios.post('/text', {text: input, userId: userId , promptId: currentPrompt.id })
+      axios.post('/text/', {text: input, userId: userId , promptId: currentPrompt.id })
       .then(() => {
         axios.get('/text/find/last')
         .then((response) => {
