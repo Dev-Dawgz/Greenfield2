@@ -96,12 +96,11 @@ body, html {
 }
 
 .user-data {
-  position: absolute;
+  /* position: absolute; */
   top: 15%;
-  left: 40%;
-  width: auto;
+  width: 1100px;
+  /* width: auto; */
   margin-top: 20px;
-  /* bottom: 10%; */
   display: flex;
   background: #FBFE8C;
   background: -moz-linear-gradient(left, #FBFE8C 0%, #C4DB93 42%, #C9BDFF 100%);
