@@ -40,9 +40,13 @@ function Homepage() {
 
 
   //set the starting time for the timer
-  const actionInterval = 60000; // one minute for testing
+  const actionInterval = 30000; // 30 seconds for testing
   const storedTargetTime = localStorage.getItem('targetTime');
   const initialTargetTime = storedTargetTime ? parseInt(storedTargetTime, 10) : Date.now() + actionInterval;
+
+  const storedTimerStart = localStorage.getItem('timerStart');
+  const initialTimerStart = storedTimerStart ? parseInt(storedTimerStart, 10) : Date.now() / 1000; // Convert milliseconds to seconds
+
 
   //calculate the remaining time based on the target time and current time
   const [remainingTime, setRemainingTime] = useState(initialTargetTime - Date.now());
@@ -172,6 +176,7 @@ function Homepage() {
       newStory()
     }, 90000)
 
+
     return () => {
       clearInterval(promptInterval)
       clearInterval(storyInterval);
@@ -181,9 +186,18 @@ function Homepage() {
   }, [])
 
   useEffect(() => {
-    
+    const appInterval = setInterval(() => {
+      console.log('Action triggered');
 
-    //update the timer every second
+      //update target time for next action
+      const newTargetTime = Date.now() + actionInterval;
+      localStorage.setItem('targetTime', newTargetTime.toString());
+
+      //calculate the remaining time 
+      setRemainingTime(newTargetTime - Date.now());
+    }, actionInterval);
+
+
     const timer = setInterval(() => {
       setRemainingTime(prevRemainingTime => {
         if (prevRemainingTime <= 0) {
@@ -199,6 +213,10 @@ function Homepage() {
       clearInterval(timer);
     };
   }, [actionInterval]);
+
+  
+
+  // Calculate minutes and seconds from the remaining time
   const minutes = Math.floor(remainingTime / 60000);
   const seconds = Math.floor((remainingTime % 60000) / 1000);
 
