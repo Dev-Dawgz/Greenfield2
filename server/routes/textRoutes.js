@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const {Text, Prompt, User} = require('../database/index');
-
+//adding random texts for pull
 //post a new text
 router.post('/', (req, res) => {
   Text.create(req.body)
