@@ -3,6 +3,19 @@ const router = express.Router();
 
 const {Text, Prompt, User} = require('../database/index');
 
+//post a new text
+router.post('/', (req, res) => {
+  Text.create(req.body)
+    .then(() => {
+      console.log('successfully added new text');
+      res.sendStatus(201);
+    })
+    .catch((error) => {
+      console.error('text post handler failed', error)
+      res.sendStatus(500);
+    })
+})
+
 //get text by text id
 router.get('/:id', (req, res) => {
   const { id } = req.params;
@@ -109,18 +122,6 @@ router.get('/user/:userId', (req,res) => {
     });
 })
 
-//post a new text
-router.post('/', (req, res) => {
-  Text.create(req.body)
-    .then(() => {
-      console.log('successfully added new text');
-      res.sendStatus(201);
-    })
-    .catch((error) => {
-      console.error('text post handler failed', error)
-      res.sendStatus(500);
-    })
-})
 
 //grabbing all the texts with a specific promptId
 router.get('/prompt/:promptId', (req, res) => {
