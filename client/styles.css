@@ -175,6 +175,14 @@ body, html {
   background: transparent;
 }
 
+.username-label {
+  font-family: 'Courier New', Courier, monospace;
+  color: #FFFFFF;
+  text-shadow: 3px 5px 2px #474747;
+  color: #FFFFFF;
+  background: transparent;
+}
+
 .user-head {
   position: absolute;
   top: 25px

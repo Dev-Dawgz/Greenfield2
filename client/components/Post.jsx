@@ -1,9 +1,13 @@
 import React, { useState, useEffect} from 'react';
 import UpVote from './UpVote.jsx';
 //import axios from 'axios';
+import { useAuth } from './AuthContext.jsx';
 
 const Post = ({text}) => {
   //console.log(username)
+    // access the user state with data from context
+  const { user, logout } = useAuth();
+  console.log(user.username)
 
   //const [username, setUsername] = useState('');
   const [newTimeStamp, setNewTimeStamp] = useState('')
@@ -41,7 +45,7 @@ const Post = ({text}) => {
       <div className="upvote-container">
        </div>
         <div className='text-context'>
-      <p> {text.text} </p>
+      <p> <strong>{user.username}: </strong>{text.text} </p>
       <UpVote text={text}/>
       <p className='timeStamp'>{newTimeStamp}</p>
     </div>
