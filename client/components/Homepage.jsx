@@ -231,7 +231,7 @@ function Homepage() {
     if(input !== ''){
       setInput('')
       setTextCount(0)
-      axios.post('/text', {text: input})
+      axios.post('/text', {text: input, userId: userId , promptId: currentPrompt.id })
       .then(() => {
         axios.get('/text/find/last')
         .then((response) => {
