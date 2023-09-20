@@ -2,18 +2,18 @@ const express = require('express');
 const router = express.Router();
 
 const {Text, Prompt, User} = require('../database/index');
-//adding random texts for pull
-//post a new text
-router.post('/', (req, res) => {
-  Text.create(req.body)
-    .then(() => {
-      console.log('successfully added new text');
-      res.sendStatus(201);
+
+//get all text
+router.get('/', (req,res) => {
+// const { } = req.params;
+  Text.findAll({})
+    .then((textData) => {
+      res.send(textData).status(200);
     })
-    .catch((error) => {
-      console.error('text post handler failed', error)
+    .catch((err) => {
+      console.error('Could not Get all texts', err);
       res.sendStatus(500);
-    })
+    });
 })
 
 //get text by text id
@@ -31,21 +31,126 @@ router.get('/:id', (req, res) => {
   })
 })
 
+
 //grabs latest text created
 router.get('/find/last', (req, res) => {
   Text.findAll({
     limit: 1,
     order: [['id', 'DESC']]
   })
-    .then((lastText) => {
-      res.send(lastText).status(200);
+  .then((lastText) => {
+    res.send(lastText).status(200);
+  })
+  .catch((err) => {
+    console.error('Could not Get last text submitted', err);
+    res.sendStatus(500);
+  });
+})
+
+//Get all text by a user
+router.get('/user/:userId', (req,res) => {
+  const { userId } = req.params;
+  Text.findAll({
+    where: {
+      userId: userId
+    }
+  })
+    .then((textData) => {
+      res.send(textData).status(200);
     })
     .catch((err) => {
-      console.error('Could not Get last text submitted', err);
+      console.error('Could not Get all texts', err);
       res.sendStatus(500);
     });
 })
 
+
+//grabbing all the texts with a specific promptId
+router.get('/prompt/:promptId', (req, res) => {
+  const { promptId } = req.params;
+  Text.findAll({
+    where: {
+      promptId: promptId
+    }
+  })
+    .then((textArr) => {
+      if(textArr.length > 0){
+        res.status(200).send(textArr);
+      } else {
+        console.log('promptId had no match')
+        res.sendStatus(404);
+      }
+    })
+    .catch((error) => {
+      console.error('get text with promptId failed', error);
+      res.sendStatus(500);
+    })
+})
+
+
+//get texts that won for specific story
+router.get('/winner/:id/:badgeId', (req, res) => {
+  const { id, badgeId } = req.params;
+  Text.findAll({
+    where: {
+      winner: id,
+    },
+    include: [
+      {
+        model: Prompt,
+        where: {
+          badgeId: badgeId,
+        }
+      }
+    ]
+  })
+  .then((texts) => {
+    res.status(200).send(texts)
+  })
+  .catch((err) => {
+    console.error('Error:', err);
+    res.status(500);
+  });
+});
+
+router.get('/user/:userId/:username', (req, res) => {
+  const {userId, username} = req.params;
+
+  Text.findOne({
+    where: {
+      userId: userId
+    },
+    include: [
+      {
+        model: User,
+        where: {
+          username: username
+        },
+        attributes: ['username']
+      }
+    ]
+  })
+  .then((user) => {
+    res.status(200).send(user)
+  })
+  .catch((err) => {
+    console.error(err);
+    res.status(500);
+  })
+})
+
+//post a new text
+router.post('/', (req, res) => {
+  Text.create(req.body)
+    .then(() => {
+      console.log('successfully added new text');
+      res.sendStatus(201);
+    })
+    .catch((error) => {
+      console.error('text post handler failed', error)
+      res.sendStatus(500);
+    })
+})
 //post to update likes and dislikes
 router.post('/likes/:id', (req, res) => {
   const { id } = req.params;
@@ -105,109 +210,6 @@ router.post('/winner/:id', (req, res) => {
     });
 });
 
-//Get all text by a user
-router.get('/user/:userId', (req,res) => {
-  const { userId } = req.params;
-  Text.findAll({
-    where: {
-      userId: userId
-    }
-  })
-    .then((textData) => {
-      res.send(textData).status(200);
-    })
-    .catch((err) => {
-      console.error('Could not Get all texts', err);
-      res.sendStatus(500);
-    });
-})
-
-
-//grabbing all the texts with a specific promptId
-router.get('/prompt/:promptId', (req, res) => {
-  const { promptId } = req.params;
-  Text.findAll({
-    where: {
-      promptId: promptId
-    }
-  })
-    .then((textArr) => {
-      if(textArr.length > 0){
-        res.status(200).send(textArr);
-      } else {
-        console.log('promptId had no match')
-        res.sendStatus(404);
-      }
-    })
-    .catch((error) => {
-      console.error('get text with promptId failed', error);
-      res.sendStatus(500);
-    })
-})
-
-//get all text
-router.get('/', (req,res) => {
-// const { } = req.params;
-  Text.findAll({})
-    .then((textData) => {
-      res.send(textData).status(200);
-    })
-    .catch((err) => {
-      console.error('Could not Get all texts', err);
-      res.sendStatus(500);
-    });
-})
-
-//get texts that won for specific story
-router.get('/winner/:id/:badgeId', (req, res) => {
-  const { id, badgeId } = req.params;
-  Text.findAll({
-    where: {
-      winner: id,
-    },
-    include: [
-      {
-        model: Prompt,
-        where: {
-          badgeId: badgeId,
-        }
-      }
-    ]
-  })
-  .then((texts) => {
-    res.status(200).send(texts)
-  })
-  .catch((err) => {
-    console.error('Error:', err);
-    res.status(500);
-  });
-});
-
-router.get('/user/:userId/:username', (req, res) => {
-  const {userId, username} = req.params;
-
-  Text.findOne({
-    where: {
-      userId: userId
-    },
-    include: [
-      {
-        model: User,
-        where: {
-          username: username
-        },
-        attributes: ['username']
-      }
-    ]
-  })
-  .then((user) => {
-    res.status(200).send(user)
-  })
-  .catch((err) => {
-    console.error(err);
-    res.status(500);
-  })
-})
 
 
 
