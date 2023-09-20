@@ -40,9 +40,13 @@ function Homepage() {
 
 
   //set the starting time for the timer
-  const actionInterval = 60000; // one minute for testing
+  const actionInterval = 30000; // 30 seconds for testing
   const storedTargetTime = localStorage.getItem('targetTime');
   const initialTargetTime = storedTargetTime ? parseInt(storedTargetTime, 10) : Date.now() + actionInterval;
+
+  const storedTimerStart = localStorage.getItem('timerStart');
+  const initialTimerStart = storedTimerStart ? parseInt(storedTimerStart, 10) : Date.now() / 1000; // Convert milliseconds to seconds
+
 
   //calculate the remaining time based on the target time and current time
   const [remainingTime, setRemainingTime] = useState(initialTargetTime - Date.now());
@@ -164,13 +168,13 @@ function Homepage() {
         setStory((story) => ([...story, best]));
       })
       newRound();
-    }, 60000) // this is where to change interval time between prompt changes (currently set to an hour)
+    }, 30000) // this is where to change interval time between prompt changes (currently set to an hour)
 
     //send badges, resets the story to start a new one, starts a new round
     const storyInterval = setInterval(() => {
       awardCeremony(latestBadgeStory.id);
       newStory()
-    }, 60000)
+    }, 6000000)
 
     return () => {
       clearInterval(promptInterval)
@@ -181,9 +185,18 @@ function Homepage() {
   }, [])
 
   useEffect(() => {
-    
+    const appInterval = setInterval(() => {
+      console.log('Action triggered');
 
-    //update the timer every second
+      //update target time for next action
+      const newTargetTime = Date.now() + actionInterval;
+      localStorage.setItem('targetTime', newTargetTime.toString());
+
+      //calculate the remaining time 
+      setRemainingTime(newTargetTime - Date.now());
+    }, actionInterval);
+
+
     const timer = setInterval(() => {
       setRemainingTime(prevRemainingTime => {
         if (prevRemainingTime <= 0) {
@@ -199,6 +212,10 @@ function Homepage() {
       clearInterval(timer);
     };
   }, [actionInterval]);
+
+  
+
+  // Calculate minutes and seconds from the remaining time
   const minutes = Math.floor(remainingTime / 60000);
   const seconds = Math.floor((remainingTime % 60000) / 1000);
 
@@ -214,7 +231,7 @@ function Homepage() {
     if(input !== ''){
       setInput('')
       setTextCount(0)
-      axios.post('/text', {text: input, userId: userId , promptId: currentPrompt.id })
+      axios.post('/text', {text: input})
       .then(() => {
         axios.get('/text/find/last')
         .then((response) => {
