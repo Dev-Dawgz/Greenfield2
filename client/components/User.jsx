@@ -108,7 +108,7 @@ const User = () => {
                     {/* <strong>Story:</strong> {entry.prompt.matchWords} */}
                   </div>
                   <div>
-                    <strong>Response:</strong> {entry.text}
+                    <strong></strong> {entry.text}
                   </div>
                   <div className='small-text'>
                     <strong>Likes:</strong> {entry.likes}

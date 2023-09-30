@@ -170,7 +170,7 @@ function Homepage() {
     const storyInterval = setInterval(() => {
       awardCeremony(latestBadgeStory.id);
       newStory()
-    }, 60000)
+    }, 120000)
 
     return () => {
       clearInterval(promptInterval)
