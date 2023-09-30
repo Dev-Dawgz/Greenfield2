@@ -1,14 +1,14 @@
-# Greenfield
+# StoryTime
 
 Do you have an interest in collaborative storytelling? Do you want to spark your creativity for writing?
-
+## About The Project
 Give Storytime a try! Storytime is a collaborative storytelling app that empowers you to set your imagination free while sharing
 inspiration with others. Our app prompts you with words to spark your creativity when you are starting a new story, and then allows
 others to pick up the story from wherever you left off. The app is designed to allow users to create, share, and enjoy stories with ease.
 Whether you are a seasoned writer or just looking to share your thoughts and ideas, this app can make your storytelling experience
 enjoyable and engaging.
 
-Storytime offers three primary user-facing features:
+Storytime offers four primary user-facing features:
 
 **Creating a New Story**
 To encourage creative writing, Storytime prompts users with 5 randomly selected words to use in their new story. Each newly written story is
@@ -19,30 +19,36 @@ the story with the most upvotes is displayed at the top of the page and becomes 
 Any user can add to the current "canon" story, their addition will also appear in the feed to be voted on and potentially become "canon". This
 is the heart of Storytime: allowing users to collaborate with one another, and collectively decide where the story is going next.
 
-**Badges and Awards** - 
-## About The Project
+**Badges and Awards** - When a story ends, different badges will be sent out to users that accomplished the best in certain categories Like ‘Most Overall Likes’, ‘Most Contributions’, ‘Most Matched Words’. Their Badges will appear in their user profile. Depending how many badges they have collected will determine the style of their badge.
+
+**Upvote** - A system for users to increment and decrement the like count of responses to other users responses to Story. The response with the most likes are added to the main story and the others are added to the users profile page.
+
 
 
 ### Built With
 
-* React
-* Bootstrap
-* AWS
+* React-Hooks
+* AWS ec2
+* DayJs
 * Trello
 * Google Auth (Passport)
 * Express
 * Socket IO
-* Mysql 
-* orm Sequelize
+* Mysql
+* Axios
+* Sequelize
+* Babel
+* Webpack
+* API: https://random-word-api
 
 
 ### Contributors
 
-Nasthia Villavicencio
-Darryl McDonald
-Logan Young
-De‘Juan Ellsworth
-A.J. Bell
+* [@NasthiaVillavicencio] (https://github.com/nasthia861)
+* [@DarrylMcdonald] (https://github.com/ddmcdona06)
+* [@DejuanEllsworth] (https://github.com/yeauxdejuan)
+* [@LoganYoung] (https://github.com/lyoun318)
+* [@AJBell] (https://github.com/abell10101)
 
 <!-- GETTING STARTED -->
 ## Getting Started
@@ -54,7 +60,7 @@ To get a local copy up and running follow these simple example steps.
 
 This is an example of how to list things you need to use the software and how to install them.
 * npm
-  ```sh
+  ```
   npm install npm@latest -g
   ```
 * mySQL
@@ -66,13 +72,39 @@ This is an example of how to list things you need to use the software and how to
 ### Installation
 
 1. Clone the repo
-   ```sh
+   ```
    git clone 'https://github.com/Dev-Dawgz/Greenfield.git'
    ```
 2. Install NPM packages
-   ```sh
+   ```
    npm install
    ```
+3. Run build
+   ```
+   npm run build:dev
+   ```
+4. Start Mysql
+   ```
+   Mac: mysql.start server
+   Windows: sudo service mysql start
+   ```
+5. Create Database
+   ```
+    mysql -uroot
+    create database stories;
+   ```
+6. Start server
+   ```
+   npm start
+   ```
+
+   ### BUGS
+
+   * After logging in, on reload user becomes logged out and has to log back in to experience app functionality.
+   * If user is eligible for more than one badge, they just receive one instead of multiple.
+   * User can upvote/downvote more than once.
+   * Sometimes the Timer gets out of sync from when the round and story ends.
+
 
 ### Contributing
 
